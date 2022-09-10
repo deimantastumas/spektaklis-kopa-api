@@ -20,6 +20,16 @@ app.get('/delete-dunes', (_, res) => {
   res.send('OK');
 });
 
+app.get('/start-play', (_, res) => {
+  socket.to("user").emit('play_started', {});
+  res.send('Play was started');
+})
+
+app.get('/stop-play', (_, res) => {
+  socket.to("user").emit('play_ended', {});
+  res.send('Play was ended');
+})
+
 io.on('connection', function(socket){
   socket.on('join_room', (data) => {
     console.log(`Someone joined the room ${data.room}`)
