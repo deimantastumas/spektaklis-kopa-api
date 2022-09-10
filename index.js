@@ -22,19 +22,19 @@ app.get('/', (req, res) => {
 
 app.get('/delete-dunes', (_, res) => {
   dunes = {};
-  socket.to("summary").emit('all_dunes', {'dunes': dunes});
+  io.to("summary").emit('all_dunes', {'dunes': dunes});
   res.send('OK');
 });
 
 app.get('/start-play', (_, res) => {
   playState = PLAY_STATES.Started;
-  socket.emit('play_state', {'playState': playState});
+  io.emit('play_state', {'playState': playState});
   res.send('Play was started');
 })
 
 app.get('/stop-play', (_, res) => {
   playState = PLAY_STATES.Ended;
-  socket.emit('play_state', {'playState': playState});
+  io.emit('play_state', {'playState': playState});
   res.send('Play was ended');
 })
 
