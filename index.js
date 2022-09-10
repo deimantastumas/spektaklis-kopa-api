@@ -9,6 +9,12 @@ const io = require('socket.io')(server, {
   });
 
 let dunes = {};
+const PLAY_STATES = {
+	NotStarted: 0,
+	Started: 1,
+	Ended: 2,
+}
+let playState = PLAY_STATES.NotStarted;
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello world</h1>');
@@ -21,12 +27,14 @@ app.get('/delete-dunes', (_, res) => {
 });
 
 app.get('/start-play', (_, res) => {
-  socket.to("user").emit('play_started', {});
+  playState = PLAY_STATES.Started;
+  socket.emit('play_state', {'playState': playState});
   res.send('Play was started');
 })
 
 app.get('/stop-play', (_, res) => {
-  socket.to("user").emit('play_ended', {});
+  playState = PLAY_STATES.Ended;
+  socket.emit('play_state', {'playState': playState});
   res.send('Play was ended');
 })
 
@@ -34,6 +42,7 @@ io.on('connection', function(socket){
   socket.on('join_room', (data) => {
     console.log(`Someone joined the room ${data.room}`)
     socket.join(data.room);
+    socket.emit('play_state', {'playState': playState});
   })
   socket.on('get_dunes', function(data) {
     socket.emit('all_dunes', {'dunes': dunes});
