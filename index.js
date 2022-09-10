@@ -26,6 +26,12 @@ app.get('/delete-dunes', (_, res) => {
   res.send('OK');
 });
 
+app.get('/reset-play', (_, res) => {
+  playState = PLAY_STATES.NotStarted;
+  io.emit('play_state', {'playState': playState});
+  res.send('Play was resetted');
+})
+
 app.get('/start-play', (_, res) => {
   playState = PLAY_STATES.Started;
   io.emit('play_state', {'playState': playState});
