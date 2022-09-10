@@ -41,6 +41,8 @@ app.get('/start-play', (_, res) => {
 app.get('/stop-play', (_, res) => {
   playState = PLAY_STATES.Ended;
   io.emit('play_state', {'playState': playState});
+  console.log("Play was ended:");
+  console.log(dunes);
   res.send('Play was ended');
 })
 
