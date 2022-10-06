@@ -58,6 +58,7 @@ io.on('connection', function(socket){
   socket.on('write_dunes', function(data) {
     dunes[data.clientId] = data.dunes;
     socket.to("summary").emit('all_dunes', {'dunes': dunes});
+    console.log(dunes);
   })
  });
 
